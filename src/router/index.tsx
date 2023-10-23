@@ -1,12 +1,12 @@
-import { lazy } from "react"
-import { useRoutes, RouteObject, Route } from "react-router-dom"
+import { lazy, Suspense } from "react"
+import { RouteObject } from "react-router-dom"
 
 const ROUTER_PATH_PREFIX = "../views"
 const ROUTER_PATH_PAGE = "page.ts"
 const ROUTER_PATH_VIEW = "index.tsx"
 
 const resloveRouterPath = (path: string) =>
-    path.replace(ROUTER_PATH_PREFIX, "").replace(ROUTER_PATH_PAGE, "")
+    path.replace(ROUTER_PATH_PREFIX, "").replace('/' + ROUTER_PATH_PAGE, "")
 const resloveRouterKey = (path: string) =>
     path.replace(ROUTER_PATH_PAGE, ROUTER_PATH_VIEW)
 
@@ -15,22 +15,21 @@ const pages = import.meta.glob("../views/**/page.ts", {
     import: "default",
 }) as Record<string, RouteObject>
 
-const views = import.meta.glob("../views/**/index.tsx", {
-    eager: true,
-    import: "default",
-}) as Record<string, unknown>
+// const views = import.meta.glob("../views/**/index.tsx", {
+//     eager: true,
+//     import: "default",
+// }) as Record<string, JSX.Element>
 
 const routes: RouteObject[] = Object.entries(pages).map(([path, config]) => {
     const key = resloveRouterKey(path)
-    path = resloveRouterPath(path)
-    const element = views[key]
+    const Module = lazy(() => import(key))
+    const element = <Suspense><Module /></Suspense>
     return {
-        path,
-        element: element,
+        path: resloveRouterPath(path),
+        element,
         ...config,
     }
 })
-console.log(views, routes)
-export default function () {
-    return useRoutes(routes)
-}
+console.log(routes)
+
+export default routes
