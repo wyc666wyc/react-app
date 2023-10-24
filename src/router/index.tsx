@@ -1,5 +1,8 @@
 import { lazy, Suspense } from "react"
 import { RouteObject } from "react-router-dom"
+import { list2Tree, AbstractTree } from '@/utils/index'
+
+type A = AbstractTree | RouteObject
 
 const ROUTER_PATH_PREFIX = "../views"
 const ROUTER_PATH_PAGE = "page.ts"
@@ -10,10 +13,31 @@ const resloveRouterPath = (path: string) =>
 const resloveRouterKey = (path: string) =>
     path.replace(ROUTER_PATH_PAGE, ROUTER_PATH_VIEW)
 
+const resolveRouterInfo = (path: string) => {
+    const tokens = resloveRouterPath(path).split('/')
+    const length = tokens.length
+    return {
+        id: tokens[length - 1],
+        pid: length > 2 ? tokens[length - 2] : null
+    }
+}
+
 const pages = import.meta.glob("../views/**/page.ts", {
     eager: true,
     import: "default",
 }) as Record<string, RouteObject>
+
+const pageList: A[] = Object.entries(pages).map(([path, config]) => {
+    const { id, pid } = resolveRouterInfo(path)
+    return {
+        id,
+        pid, 
+        path,
+        ...config
+    }
+})
+
+console.log(list2Tree(pageList))
 
 // const views = import.meta.glob("../views/**/index.tsx", {
 //     eager: true,
