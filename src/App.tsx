@@ -3,7 +3,7 @@ import routeConfig from "@/router"
 
 function App() {
     const element = useRoutes(routeConfig)
-    return <div>{element}</div>
+    return <>{element}</>
 }
 
 export default App

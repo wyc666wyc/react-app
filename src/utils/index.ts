@@ -1,6 +1,6 @@
 export interface AbstractTree {
-    id: string,
-    pid: string,
+    id: string | number,
+    pid: string | number | null,
     children?: AbstractTree[],
     [P: string]: unknown
 }
