@@ -1,9 +1,9 @@
-import { useRoutes } from "react-router"
+import { RouterProvider, createHashRouter } from "react-router-dom"
 import routeConfig from "@/router"
 
 function App() {
-    const element = useRoutes(routeConfig)
-    return <>{element}</>
+    const router = createHashRouter(routeConfig)
+    return <RouterProvider router={router}></RouterProvider>
 }
 
 export default App
