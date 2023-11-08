@@ -22,7 +22,7 @@ function Box(props: ThreeElements["mesh"]) {
     )
 }
 
-export default function Three() {
+const Component = () => {
     return (
         <Canvas className="h-full w-full">
             <ambientLight />
@@ -31,4 +31,12 @@ export default function Three() {
             <Box position={[1.2, 0, 0]} />
         </Canvas>
     )
+}
+const meta = {
+    
+}
+
+export {
+    Component,
+    meta
 }

@@ -1,12 +1,13 @@
-import { Outlet } from 'react-router-dom'
-import { motion } from 'framer-motion'
-export default function Home() {
+const Component = () => {
     return (
-        <div>
-            <motion.div animate={{ rotate: 360 }}>
-                123
-            </motion.div>
-            <Outlet />
-        </div>
+        <div>index</div>
     )
+}
+const meta = {
+
+}
+
+export {
+    Component,
+    meta
 }
